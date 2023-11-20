@@ -1,0 +1,275 @@
+[
+    {
+        "id": "fee37637.72233",
+        "type": "tab",
+        "label": "Arduino Serial",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b97eb549.0db798",
+        "type": "serial in",
+        "z": "fee37637.72233",
+        "name": "Arduino",
+        "serial": "86e325ae.59b348",
+        "x": 110,
+        "y": 180,
+        "wires": [
+            [
+                "2e5a2d9e.4453da"
+            ]
+        ]
+    },
+    {
+        "id": "2e5a2d9e.4453da",
+        "type": "split",
+        "z": "fee37637.72233",
+        "name": "",
+        "splt": ",",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 230,
+        "y": 180,
+        "wires": [
+            [
+                "2aa8df93.3ec588"
+            ]
+        ]
+    },
+    {
+        "id": "2aa8df93.3ec588",
+        "type": "change",
+        "z": "fee37637.72233",
+        "name": "to number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(msg.payload)\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "db260146.9d974"
+            ]
+        ]
+    },
+    {
+        "id": "db260146.9d974",
+        "type": "switch",
+        "z": "fee37637.72233",
+        "name": "",
+        "property": "parts.index",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 180,
+        "wires": [
+            [
+                "c5f75e6a.a0479",
+                "ba3061de41b2e092"
+            ],
+            [
+                "63c6807d.fec12",
+                "f87094bb531f47eb"
+            ]
+        ]
+    },
+    {
+        "id": "c5f75e6a.a0479",
+        "type": "debug",
+        "z": "fee37637.72233",
+        "name": "Umidade",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 720,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "63c6807d.fec12",
+        "type": "debug",
+        "z": "fee37637.72233",
+        "name": "Temperatura",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 730,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "cfab411b.d58238",
+        "type": "serial out",
+        "z": "fee37637.72233",
+        "name": "Arduino led",
+        "serial": "86e325ae.59b348",
+        "x": 330,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "b8b45b348da7177e",
+        "type": "mqtt in",
+        "z": "fee37637.72233",
+        "name": "",
+        "topic": "Sensor/Atuador",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "a250ef4ca3d6f69e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "cfab411b.d58238"
+            ]
+        ]
+    },
+    {
+        "id": "d92a075bed46b7b6",
+        "type": "mqtt out",
+        "z": "fee37637.72233",
+        "name": "",
+        "topic": "Sensor/Atuador",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a250ef4ca3d6f69e",
+        "x": 1060,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ba3061de41b2e092",
+        "type": "function",
+        "z": "fee37637.72233",
+        "name": "Humidade >51?",
+        "func": "if(msg.payload >51){\n    msg.payload = 'K'; \n}\nelse{\n    msg.payload = 'Y';\n}\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 100,
+        "wires": [
+            [
+                "d92a075bed46b7b6"
+            ]
+        ]
+    },
+    {
+        "id": "f87094bb531f47eb",
+        "type": "function",
+        "z": "fee37637.72233",
+        "name": "Temperatura >32 ?",
+        "func": "if(msg.payload >32){\n    msg.payload = 'H'; \n}\nelse{\n    msg.payload = 'L';\n}\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 320,
+        "wires": [
+            [
+                "d92a075bed46b7b6"
+            ]
+        ]
+    },
+    {
+        "id": "86e325ae.59b348",
+        "type": "serial-port",
+        "serialport": "COM7",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "500",
+        "bin": "false",
+        "out": "interbyte",
+        "addchar": "",
+        "responsetimeout": ""
+    },
+    {
+        "id": "a250ef4ca3d6f69e",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.mqtt-dashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
